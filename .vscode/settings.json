@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "hash_map": "c",
+        "random": "c",
+        "functional": "c",
+        "lazer.h": "c",
+        "stopwatch.h": "c",
+        "params-temp.h": "c",
+        "cstdint": "c",
+        "types.h": "c",
+        "string": "c",
+        "vector": "c",
+        "memory": "c",
+        "optional": "c",
+        "string_view": "c",
+        "system_error": "c",
+        "stdio.h": "c",
+        "string.h": "c",
+        "data_temp.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
