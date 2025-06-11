@@ -3407,86 +3407,66 @@ ___schwartz_zippel_accumulate_bits (
   const unsigned int ibeta = (bit_index) * 2;
   poly_ptr poly;
   int_ptr coeffa, coeffb;
-  unsigned int i, j, k;
+
+  int_ptr coeff[bit_length];
+
+  unsigned int i, j, k, ell;
   spolyvec_ptr r1tptr[1];
-  INTVEC_T (V, bit_length * (d - 1) * lambda, Rq->q->nlimbs);
+
+  const unsigned int lambda2 = add_param->lambda2;
+  INTVEC_T (V, lambda2 * (d - 1) * lambda, Rq->q->nlimbs);
   INT_T (v, Rq->q->nlimbs * 2);
+  INTVEC_T (Gam, bit_length * lambda2, Rq->q->nlimbs);
+  INT_T (gam, Rq->q->nlimbs * 2);
+
   INT_T (neginv2, Rq->q->nlimbs);
 
   int_neg (neginv2, Rq->inv2);
+
   intvec_urandom (V, q, log2q, seed, dom);
 
+  intvec_urandom (Gam, q, log2q, seed, dom + bit_length * (d - 1) * lambda);
+
   // d-1 eval eqs in beta,o(beta), for i=1,...,d-1:
-  // prove const coeff of X^i * beta4 = 0 -> -i2*x^i*x^(d/2)*beta +
-  // i2*x^i*x^(d/2)*o(beta) = 0 terms: R2: 0, r1: 2, r0: 0 | * (d-1)
-  for (k = 0; k < 1; k++)
+  // prove const coeff of X^i * beta3 = 0 -> x^i*beta + i2*x^i*o(beta) = 0
+  // terms: R2: 0, r1: 2, r0: 0 | * (d-1)
+  // printf("bit_length = %d \n", bit_length);
+
+  for (k = 0; k < lambda2; k++)
   {
     for (i = 1; i < d; i++)
       {
         spolyvec_set_empty (r1t);
-        poly = spolyvec_insert_elem (r1t, ibeta + 2 * k);
-        poly_set_zero (poly);
-        if (i < d / 2)
-          {
-            coeffa = poly_get_coeff (poly, i + d / 2);
-          }
-        else
-          {
-            coeffa = poly_get_coeff (poly, i + d / 2 - d);
-          }
-        poly = spolyvec_insert_elem (r1t, ibeta  + 2 * k + 1);
-        poly_set_zero (poly);
-        if (i < d / 2)
-          {
-            coeffb = poly_get_coeff (poly, i + d / 2);
-          }
-        else
-          {
-            coeffb = poly_get_coeff (poly, i + d / 2 - d);
-          }
+
+        for (ell = 0; ell < bit_length; ell++)
+        {
+          poly = spolyvec_insert_elem (r1t, ibeta + ell*2);
+          poly_set_zero (poly);
+          coeff[ell] = poly_get_coeff (poly, i);
+        }
+
         r1t->sorted = 1;
         r1tptr[0] = r1t;
 
         for (j = 0; j < lambda / 2; j++)
           {
-            int_mul (v, Rq->inv2, intvec_get_elem (V, (d - 1) * lambda * k + (i - 1) * lambda + 2 * j));
-            // printf("v:\n");
-            // int_dump(v);
-            if (i < d / 2)
-              {
-                int_mod (coeffb, v, q);
-                int_redc (coeffb, coeffb, q);
-                int_neg (coeffa, coeffb);
-                int_redc (coeffa, coeffa, q);
-              }
-            else
-              {
-                int_mod (coeffa, v, q);
-                int_redc (coeffa, coeffa, q);
-                int_neg (coeffb, coeffa);
-                int_redc (coeffb, coeffb, q);
-              }
+            for (ell = 0; ell < bit_length; ell++)
+            {
+              int_mul (v, intvec_get_elem (Gam, bit_length * k + ell), intvec_get_elem (V, (i - 1) * lambda * k + 2 * j));
+              int_mod (coeff[ell], v, q);
+              int_redc (coeff[ell], coeff[ell], q);
+            }
 
             ___schwartz_zippel_accumulate_ (R2i[j], r1i[j], r0i[j], NULL, r1tptr,
                                             NULL, 1, u0, u1, t0, t1);
-            // printf("r1i:\n");
-            // spolyvec_dump(r1i[j]);
-            int_mul (v, Rq->inv2,
-                    intvec_get_elem (V, (i - 1) * lambda + 2 * j + 1));
-            if (i < d / 2)
-              {
-                int_mod (coeffb, v, q);
-                int_redc (coeffb, coeffb, q);
-                int_neg (coeffa, coeffb);
-                int_redc (coeffa, coeffa, q);
-              }
-            else
-              {
-                int_mod (coeffa, v, q);
-                int_redc (coeffa, coeffa, q);
-                int_neg (coeffb, coeffa);
-                int_redc (coeffb, coeffb, q);
-              }
+
+            for (ell = 0; ell < bit_length; ell++)
+            {
+              int_mul (v, intvec_get_elem (Gam, bit_length * k + ell), intvec_get_elem (V, (i - 1) * lambda * k + 2 * j + 1));
+              int_mod (coeff[ell], v, q);
+              int_redc (coeff[ell], coeff[ell], q);
+            }
+
             ___schwartz_zippel_accumulate_ (R2i2[j], r1i2[j], r0i2[j], NULL,
                                             r1tptr, NULL, 1, u0, u1, t0, t1);
           }

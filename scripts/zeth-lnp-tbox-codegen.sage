@@ -536,7 +536,7 @@ static const abdlop_params_t {name}_quad_eval_ = {{{{ {name}_ring, {name}_dcomp,
 static const abdlop_params_t {name}_quad_many_ = {{{{ {name}_ring, {name}_dcomp, {m1 + Z}, {m2}, {l + 256/d * num_norm + 1 + lmbda/2 + add_ARP * (256/d + 1)}, {1}, {kmsis}, {name}_Bsq, {nu}, {omega}, {omega_bits}, {eta}, {rejs1}, {log2stdev1}, {name}_scM1, {name}_stdev1sq, {rejs2}, {log2stdev2}, {name}_scM2, {name}_stdev2sq}}}};
 static const lnp_quad_eval_params_t {name}_quad_eval = {{{{ {name}_quad_eval_, {name}_quad_many_, {lmbda}}}}};
 static const lnp_tbox_params_t {name} = {{{{ {name}_tbox, {name}_quad_eval, {nbin}, {name}_n, {nprime}, {Z}, {nex}, {rejs3}, {log2stdev3}, {name}_scM3, {name}_stdev3sq, {rejs4}, {log2stdev4}, {name}_scM4, {name}_stdev4sq, {name}_Bz3sqr, {name}_Bz4, &{name}_l2Bsq[0], {name}_inv4, {int(ceil(proof_bits / 8))}UL }}}};
-static const add_lnp_tbox_params_t add_tbox_para = {{{{{m_rows}, {n_cols}, {length}, {length2}, {add_ARP}, {bit_proof}, {num_rec }, {bit_index}, {bit_length}, {mes_index}, {mp_index}, {bin_h_index}, {bin_m_index}, {-1 * eval_t * (2**32 - 1)}, {beta_m}, {bin_bal_index}, {balance_range}, {rejs5}, {log2stdev5}, {name}_scM5, {name}_stdev5sq,  {name}_Bz5 }}}};
+static const add_lnp_tbox_params_t add_tbox_para = {{{{{lambda2}, {m_rows}, {n_cols}, {length}, {length2}, {add_ARP}, {bit_proof}, {num_rec }, {bit_index}, {bit_length}, {mes_index}, {mp_index}, {bin_h_index}, {bin_m_index}, {-1 * eval_t * (2**32 - 1)}, {beta_m}, {bin_bal_index}, {balance_range}, {rejs5}, {log2stdev5}, {name}_scM5, {name}_stdev5sq,  {name}_Bz5 }}}};
 """
 
 printc(out)

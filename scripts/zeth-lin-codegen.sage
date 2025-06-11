@@ -74,6 +74,7 @@ E = 0   # bound on linf(e), n/a here
 
 
 log2q = 46
+lambda2 = ceil(128/log2q)
 
 # find dimension of binary vector
 nbin_ = 0

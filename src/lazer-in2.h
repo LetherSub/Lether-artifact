@@ -541,12 +541,9 @@ typedef const lnp_tbox_params_struct *lnp_tbox_params_srcptr;
 
 typedef struct
 {
-  // abdlop_params_srcptr tbox;
-  // lnp_quad_eval_params_srcptr quad_eval;
-
   /* dimensions */
-  // const unsigned int nbin;
-  // const unsigned int *const n;
+  const unsigned int lambda2;
+
   const unsigned int num_m;
 
   const unsigned int num_n;
@@ -581,30 +578,14 @@ typedef struct
 
   const unsigned int balance_range;
 
-
-  // const unsigned int Z;
-  // const unsigned int nex;
-  // const unsigned int num_norm;
-
   /* rejection sampling */
-  // const int rej3;                /* do rejection sampling on s3 */
-  // const unsigned int log2stdev3; /* stdev3 = 1.55 * 2^log2stdev1 */
-  // const int_srcptr scM3;         /* scaled M3: round(M3 * 2^128) */
-  // const int_srcptr stdev3sqr;
   const int rej5;                /* do rejection sampling on s4 */
   const unsigned int log2stdev5; /* stdev4 = 1.55 * 2^log2stdev2 */
   const int_srcptr scM5;         /* scaled M4: round(M4 * 2^128) */
   const int_srcptr stdev5sqr;
 
   /* bounds */
-  // const int_srcptr Bz3sqr;
   const int_srcptr Bz5;
-  // const int_srcptr *l2Bsqr; /* squared euclidean norm bounds */
-
-  // const int_srcptr inv4;
-
-  /* expected proof size in bytes */
-  // const unsigned long prooflen;
 } add_lnp_tbox_params_struct;
 typedef add_lnp_tbox_params_struct add_lnp_tbox_params_t[1];
 typedef const add_lnp_tbox_params_struct *add_lnp_tbox_params_srcptr;
